@@ -6,6 +6,8 @@ import javax.swing.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.awt.*;
+import java.io.File;
+import java.awt.event.*;
 
 public class MenuPanel extends JPanel {
 
@@ -27,7 +29,7 @@ public class MenuPanel extends JPanel {
   private int menuPanelHeight;
 
   @PostConstruct
-  private void onInit(){
+  private void onInit() {
     setBackground(new Color(150, 160, 210, 200));
     setBounds(menuPanelX, menuPanelY, menuPanelWidth, menuPanelHeight);
     setLayout(null);
@@ -40,6 +42,7 @@ public class MenuPanel extends JPanel {
     openFileButton.setBounds(BUTTON_X, 20, BUTTON_WIDTH, 35);
     openFileButton.setBackground(Color.white);
     openFileButton.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+    openFileButton.addActionListener(this::onOpenFileClick);
     add(openFileButton);
 
     runButton = new JButton("Run");
@@ -47,6 +50,18 @@ public class MenuPanel extends JPanel {
     runButton.setBackground(Color.white);
     runButton.setBorder(BorderFactory.createLineBorder(Color.darkGray));
     add(runButton);
+  }
+
+  private void onOpenFileClick(ActionEvent e){
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+    int result = fileChooser.showOpenDialog(this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File selectedFile = fileChooser.getSelectedFile();
+      System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+    }else{
+      JOptionPane.showMessageDialog(null, String.format("Permission denied!!! Code: %d", result));
+    }
   }
 
   public MenuPanel() {

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import university.utm.fcim.logic.FileParser;
 import university.utm.fcim.state.LabirintState;
 import university.utm.fcim.ui.GraphicPanel;
 import university.utm.fcim.ui.MainWindow;
@@ -36,6 +37,11 @@ public class SpringConfig {
   @Bean(name="labirintState")
   public LabirintState getLabirintState(){
     return new LabirintState();
+  }
+
+  @Bean(name="fileParser")
+  public FileParser getFileParser(){
+    return new FileParser();
   }
 
 }
