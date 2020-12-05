@@ -60,12 +60,19 @@ public class GraphicPanel extends JPanel implements ActionListener {
   }
 
   private void update() {
+    repaint();
+    setFocusable(true);
+    requestFocus();
+    
+  }
+  
+  public void refresh(){
+    image = createVolatileImage(graphicPanelWidth, graphicPanelHeight);
   }
 
   @Override
   public void actionPerformed(ActionEvent actionEvent) {
     update();
-    repaint();
   }
 
   @Override

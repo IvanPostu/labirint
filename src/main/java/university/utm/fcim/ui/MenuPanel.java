@@ -6,6 +6,7 @@ import javax.swing.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import university.utm.fcim.logic.FileParser;
 import university.utm.fcim.state.LabirintState;
 
 import java.awt.*;
@@ -18,6 +19,12 @@ public class MenuPanel extends JPanel {
 
   private JButton runButton;
   private JButton openFileButton;
+
+  @Value(value = "${blocks.count.x}")
+  private int blocksPerLine;
+
+  @Value(value = "${blocks.count.y}")
+  private int blocksPerColumn;
 
   @Value(value = "${window.menuPanel.x}")
   private int menuPanelX;
@@ -33,6 +40,12 @@ public class MenuPanel extends JPanel {
 
   @Autowired
   private LabirintState labirintState;
+
+  @Autowired
+  private GraphicPanel graphicPanel;
+
+  @Autowired
+  private FileParser parser;
 
   @PostConstruct
   private void onInit() {
@@ -59,17 +72,21 @@ public class MenuPanel extends JPanel {
     add(runButton);
   }
 
-  private void onOpenFileClick(ActionEvent e){
+  private void onOpenFileClick(ActionEvent e) {
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
     int result = fileChooser.showOpenDialog(this);
     if (result == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+      try {
+        char[][] fileData = parser.parse(selectedFile, blocksPerLine, blocksPerColumn);
+        labirintState.setState(fileData);
+        graphicPanel.refresh();
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
     }
-    // else{
-    //   JOptionPane.showMessageDialog(null, String.format("Permission denied!!! Code: %d", result));
-    // }
   }
 
   private void onRunClick(ActionEvent e){

@@ -45,9 +45,7 @@ public class LabirintState {
   @PostConstruct
   private void onInit() throws Exception {
     File file = ResourceUtils.getFile(initialLevel);
-    airBlocks = new ArrayList<>(blocksPerLine * blocksPerColumn);
-    wallBlocks = new ArrayList<>();
-    pathBlocks = new ArrayList<>();
+ 
 
     char[][] fileData = fileParser.parse(file, blocksPerLine, blocksPerColumn);
     setState(fileData);
@@ -55,8 +53,11 @@ public class LabirintState {
   }
 
   public void setState(char[][] newState) {
-
+    airBlocks = new ArrayList<>(blocksPerLine * blocksPerColumn);
+    wallBlocks = new ArrayList<>();
+    pathBlocks = new ArrayList<>();
     blocks = new ArrayList<>();
+    
     for (int i = 0; i < blocksPerLine; i++) {
       for (int j = 0; j < blocksPerColumn; j++) {
         airBlocks.add(new Block(i, j));
