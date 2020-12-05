@@ -3,7 +3,10 @@ package university.utm.fcim.ui;
 import javax.annotation.PostConstruct;
 import javax.swing.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import university.utm.fcim.state.LabirintState;
 
 import java.awt.*;
 import java.io.File;
@@ -28,6 +31,9 @@ public class MenuPanel extends JPanel {
   @Value(value = "${window.menuPanel.height}")
   private int menuPanelHeight;
 
+  @Autowired
+  private LabirintState labirintState;
+
   @PostConstruct
   private void onInit() {
     setBackground(new Color(150, 160, 210, 200));
@@ -49,6 +55,7 @@ public class MenuPanel extends JPanel {
     runButton.setBounds(BUTTON_X, 70, BUTTON_WIDTH, 35);
     runButton.setBackground(Color.white);
     runButton.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+    runButton.addActionListener(this::onRunClick);
     add(runButton);
   }
 
@@ -59,9 +66,14 @@ public class MenuPanel extends JPanel {
     if (result == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-    }else{
-      JOptionPane.showMessageDialog(null, String.format("Permission denied!!! Code: %d", result));
     }
+    // else{
+    //   JOptionPane.showMessageDialog(null, String.format("Permission denied!!! Code: %d", result));
+    // }
+  }
+
+  private void onRunClick(ActionEvent e){
+    labirintState.run();
   }
 
   public MenuPanel() {

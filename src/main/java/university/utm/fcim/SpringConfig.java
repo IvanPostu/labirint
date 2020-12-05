@@ -36,7 +36,7 @@ public class SpringConfig {
 
   @Bean(name="labirintState")
   public LabirintState getLabirintState(){
-    return new LabirintState();
+    return new LabirintState(getFileParser());
   }
 
   @Bean(name="fileParser")
